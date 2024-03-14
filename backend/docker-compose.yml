@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: postgres_tech
+    image: postgres:15
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5555:5432
+    environment:
+      POSTGRES_DB: "techstrelka"
+      POSTGRES_USER: "dev"
+      POSTGRES_PASSWORD: "f7636c0azc8bfk1"
+    restart: unless-stopped
+  pgadmin:
+    image: dpage/pgadmin4:7.4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "romain.barabanow@yandex.ru"
+      PGADMIN_DEFAULT_PASSWORD: "f7636c0azc8bfk1"
+      PGADMIN_LISTEN_PORT: "5050"
+    ports:
+      - 5050:5050
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
