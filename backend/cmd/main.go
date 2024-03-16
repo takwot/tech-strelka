@@ -9,7 +9,7 @@ import (
 	"github.com/takwot/tech-strelka.git/pkg/service"
 )
 
-func main(){
+func main() {
 
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 
@@ -42,7 +42,7 @@ func main(){
 
 }
 
-func initConfig() error{
+func initConfig() error {
 	viper.AddConfigPath("config")
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
