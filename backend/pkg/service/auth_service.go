@@ -4,8 +4,10 @@ import (
 	"crypto/sha1"
 	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"github.com/takwot/tech-strelka.git/pkg/database"
 	"github.com/takwot/tech-strelka.git/pkg/models"
@@ -33,6 +35,16 @@ func NewAuthService(repo database.Repository) *AuthService {
 func (s *AuthService) CreateUser(user models.User) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
 	return s.repo.CreateUser(user)
+
+}
+
+func (s *AuthService) UploadAvatar(user models.User, c *gin.Context) {
+	body := user
+	currentTime := time.Now().Format("01-02-06  15-04-.999")
+	err := c.SaveUploadedFile(body.Avatar, "asset/"+currentTime+body.Avatar.Filename)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "error while uploading avatar")
+	}
 
 }
 

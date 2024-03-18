@@ -23,6 +23,7 @@ func (h *Handle) InitRoutes() *gin.Engine {
 		{
 			auth.POST("/register", h.signUp)
 			auth.POST("/login", h.signIn)
+			auth.POST("/avatar", h.uploadAvatar)
 		}
 	}
 
