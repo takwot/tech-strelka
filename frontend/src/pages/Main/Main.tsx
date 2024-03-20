@@ -1,15 +1,37 @@
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
 import styles from "./Main.module.scss";
-import Post from "./Post/Post";
+import Switch from "./Switch/Switch";
+import Albums from "./Albums/Albums";
 
 const Main = () => {
+  const [album, setAlbum] = useState(true);
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        <Switch album={album} setAlbum={setAlbum} />
+        {album ? (
+          <Albums />
+        ) : (
+          <div className={styles.photo_cont}>
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+          </div>
+        )}
       </div>
     </div>
   );

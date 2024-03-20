@@ -1,9 +1,10 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
+	cors "github.com/rs/cors/wrapper/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	srv "github.com/takwot/tech-strelka.git"
 	"github.com/takwot/tech-strelka.git/pkg/controllers"
 	"github.com/takwot/tech-strelka.git/pkg/database"
 	"github.com/takwot/tech-strelka.git/pkg/service"
@@ -34,11 +35,20 @@ func main() {
 	services := service.NewServices(repos)
 	handlers := controllers.NewHandle(services)
 
-	srv := new(srv.Server)
+	srv := gin.Default()
 
-	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-		logrus.Fatalf("Error while start server!", err.Error())
-	}
+	corsMiddleware := cors.Default()
+
+ 	srv.Use(corsMiddleware)
+	handlers.InitRoutes(srv)
+
+	srv.Run(":5000")
+
+	// srv := new(srv.Server)
+
+	// if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
+	// 	logrus.Fatalf("Error while start server!", err.Error())
+	// }
 
 }
 

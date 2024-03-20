@@ -13,9 +13,14 @@ func NewHandle(service *service.Service) *Handle {
 	return &Handle{service: service}
 }
 
-func (h *Handle) InitRoutes() *gin.Engine {
+func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 
-	router := gin.New()
+
+	// corsConfig := cors.New(cors.Options{
+		// AllowedOrigins: []string{"http://localhost:5173/"},
+		// AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		// AllowedHeaders: []string{"Content-Type", "Authorization"},
+	//    })
 
 	api := router.Group("/api")
 	{

@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/takwot/tech-strelka.git/pkg/models"
@@ -39,12 +38,12 @@ func (h *Handle) uploadAvatar(c *gin.Context) {
 
 	file, _ := c.FormFile("file")
 
-	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%x.%x", time.Now(), ".png"))
+	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/Avatar.png", ""))
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"status":   true,
-		"filename": file.Filename,
+		"status": true,
 	})
+
 }
 
 func (h *Handle) signIn(c *gin.Context) {
