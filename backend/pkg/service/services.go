@@ -1,8 +1,6 @@
 package service
 
 import (
-	"mime/multipart"
-
 	"github.com/takwot/tech-strelka.git/pkg/database"
 	"github.com/takwot/tech-strelka.git/pkg/models"
 )
@@ -14,7 +12,8 @@ type Auth interface {
 }
 
 type Album interface {
-	UploadMultipleFile(files []*multipart.FileHeader) ([]string, error)
+	CreateAlbum(album models.Album) (int, error)
+	GetAllAlbum() ([]models.Album, error)
 }
 
 type Service struct {

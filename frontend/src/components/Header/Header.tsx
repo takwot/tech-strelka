@@ -9,7 +9,7 @@ import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 
 const Header = () => {
   const [menu, setMenu] = useState(false);
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(false);
 
   return (
     <>
@@ -19,8 +19,10 @@ const Header = () => {
         </NavLink>
         {!auth && (
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <button>Регистрация</button>
-            <button>Войти</button>
+            <NavLink to={"/auth"}>
+              <button>Register</button>
+              <button>Login</button>
+            </NavLink>
           </div>
         )}
         {auth && (

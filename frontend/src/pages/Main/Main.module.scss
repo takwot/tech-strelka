@@ -7,6 +7,28 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
-    width: 700px;
+    width: 80%;
+
+    .photo_cont {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      div {
+        width: 200px;
+        height: 150px;
+        background: red;
+        border-radius: 16px;
+      }
+    }
+
+    button {
+      height: 40px;
+      width: 70px;
+      font-weight: 600;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+    }
   }
 }

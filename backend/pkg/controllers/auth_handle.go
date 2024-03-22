@@ -30,29 +30,26 @@ func (h *Handle) signUp(c *gin.Context) {
 }
 
 type SignInInput struct {
-	Username string `json:"username" binding: "required"`
+	Name     string `json:"name" binding: "required"`
 	Password string `json:"password" binding: "required"`
-}
-
-func (h *Handle) uploadFiles(c *gin.Context) {
-	form, _ := c.MultipartForm()
-	files := form.File["images"]
-	h.service.Album.UploadMultipleFile(files)
-	c.JSON(200, map[string]interface{}{
-		"ok": "ok",
-	})
 }
 
 func (h *Handle) uploadAvatar(c *gin.Context) {
 
+	id, err := h.getUserId(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusNotFound, "user not found")
+	}
+
 	file, _ := c.FormFile("file")
 
-	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/Avatar.png", ""))
+	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/Avatar.png", id))
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"status":   true,
-		"filename": file.Filename,
+		"status": true,
 	})
+
 }
 
 func (h *Handle) signIn(c *gin.Context) {
@@ -63,7 +60,7 @@ func (h *Handle) signIn(c *gin.Context) {
 		return
 	}
 
-	token, err := h.service.Auth.GenerateToken(input.Username, input.Password)
+	token, err := h.service.Auth.GenerateToken(input.Name, input.Password)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "error while creating token")
 		return

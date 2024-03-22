@@ -13,9 +13,13 @@ func NewHandle(service *service.Service) *Handle {
 	return &Handle{service: service}
 }
 
-func (h *Handle) InitRoutes() *gin.Engine {
+func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 
-	router := gin.New()
+	// corsConfig := cors.New(cors.Options{
+	// AllowedOrigins: []string{"http://localhost:5173/"},
+	// AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+	// AllowedHeaders: []string{"Content-Type", "Authorization"},
+	//    })
 
 	api := router.Group("/api")
 	{
@@ -23,13 +27,15 @@ func (h *Handle) InitRoutes() *gin.Engine {
 		{
 			auth.POST("/register", h.signUp)
 			auth.POST("/login", h.signIn)
-			auth.POST("/avatar", h.uploadAvatar)
 		}
 		album := api.Group("/album")
 		{
-			album.POST("/", h.uploadFiles)
+			album.POST("/", h.createAlbum)
 		}
 	}
 
 	return router
 }
+
+// 340 294
+// 367 385
