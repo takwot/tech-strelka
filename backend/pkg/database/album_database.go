@@ -30,6 +30,14 @@ func (r *AlbumPostgres) CreateAlbum(album models.Album) (int, error) {
 	return id, nil
 }
 
+func (r *AlbumPostgres) GetAlbum(id int) (models.Album, error) {
+	var album models.Album
+	query := fmt.Sprintf("SELECT id FROM %s WHERE id=$1", albumTable)
+	err := r.db.Get(&album, query, id)
+
+	return album, err
+}
+
 func (r *AlbumPostgres) GetAllAlbum() ([]models.Album, error) {
 	var albums []models.Album
 
