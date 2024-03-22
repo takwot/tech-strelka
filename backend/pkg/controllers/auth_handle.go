@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/takwot/tech-strelka.git/pkg/models"
@@ -35,11 +34,20 @@ type SignInInput struct {
 	Password string `json:"password" binding: "required"`
 }
 
+func (h *Handle) uploadFiles(c *gin.Context) {
+	form, _ := c.MultipartForm()
+	files := form.File["images"]
+	h.service.Album.UploadMultipleFile(files)
+	c.JSON(200, map[string]interface{}{
+		"ok": "ok",
+	})
+}
+
 func (h *Handle) uploadAvatar(c *gin.Context) {
 
 	file, _ := c.FormFile("file")
 
-	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%x.%x", time.Now(), ".png"))
+	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/Avatar.png", ""))
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"status":   true,

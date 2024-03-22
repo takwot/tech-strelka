@@ -25,6 +25,10 @@ func (h *Handle) InitRoutes() *gin.Engine {
 			auth.POST("/login", h.signIn)
 			auth.POST("/avatar", h.uploadAvatar)
 		}
+		album := api.Group("/album")
+		{
+			album.POST("/", h.uploadFiles)
+		}
 	}
 
 	return router

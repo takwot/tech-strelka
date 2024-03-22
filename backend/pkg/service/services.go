@@ -1,6 +1,8 @@
 package service
 
 import (
+	"mime/multipart"
+
 	"github.com/takwot/tech-strelka.git/pkg/database"
 	"github.com/takwot/tech-strelka.git/pkg/models"
 )
@@ -11,12 +13,18 @@ type Auth interface {
 	GenerateToken(username string, password string) (string, error)
 }
 
+type Album interface {
+	UploadMultipleFile(files []*multipart.FileHeader) ([]string, error)
+}
+
 type Service struct {
 	Auth
+	Album
 }
 
 func NewServices(repo *database.Repository) *Service {
 	return &Service{
-		Auth: NewAuthService(*repo),
+		Auth:  NewAuthService(*repo),
+		Album: NewAlbumService(*repo),
 	}
 }
