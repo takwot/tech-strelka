@@ -10,6 +10,7 @@ import (
 
 const (
 	usersTable = "users"
+	albumTable = "album"
 )
 
 type Config struct {

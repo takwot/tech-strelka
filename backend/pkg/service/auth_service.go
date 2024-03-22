@@ -4,10 +4,8 @@ import (
 	"crypto/sha1"
 	"errors"
 	"fmt"
-	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"github.com/takwot/tech-strelka.git/pkg/database"
 	"github.com/takwot/tech-strelka.git/pkg/models"
@@ -38,17 +36,9 @@ func (s *AuthService) CreateUser(user models.User) (int, error) {
 
 }
 
-func (s *AuthService) UploadAvatar(user models.User, c *gin.Context) {
-	body := user
-	currentTime := time.Now().Format("01-02-06  15-04-.999")
-	err := c.SaveUploadedFile(body.Avatar, "asset/"+currentTime+body.Avatar.Filename)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, "error while uploading avatar")
-	}
-
-}
 
 func (s *AuthService) GenerateToken(username string, password string) (string, error) {
+	fmt.Print(username)
 	user, err := s.repo.GetUser(username, generatePasswordHash(password))
 	if err != nil {
 		return "", err

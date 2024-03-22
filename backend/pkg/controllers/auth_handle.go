@@ -30,15 +30,22 @@ func (h *Handle) signUp(c *gin.Context) {
 }
 
 type SignInInput struct {
-	Username string `json:"username" binding: "required"`
+	Name string `json:"name" binding: "required"`
 	Password string `json:"password" binding: "required"`
 }
 
 func (h *Handle) uploadAvatar(c *gin.Context) {
 
+	id, err := h.getUserId(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusNotFound, "user not found")
+	}
+
 	file, _ := c.FormFile("file")
 
-	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/Avatar.png", ""))
+	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/Avatar.png", fmt.Sprint(id)))
+
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"status": true,
@@ -54,7 +61,7 @@ func (h *Handle) signIn(c *gin.Context) {
 		return
 	}
 
-	token, err := h.service.Auth.GenerateToken(input.Username, input.Password)
+	token, err := h.service.Auth.GenerateToken(input.Name, input.Password)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, "error while creating token")
 		return

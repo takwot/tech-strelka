@@ -10,12 +10,19 @@ type Auth interface {
 	GetUser(username, password string) (models.User, error)
 }
 
+type Album interface {
+	CreateAlbum(album models.Album) (int, error)
+	GetAllAlbum() ([]models.Album, error)
+}
+
 type Repository struct {
 	Auth
+	Album
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Auth: NewAuthPostgres(db),
+		Album: NewAlbumPostgres(db),
 	}
 }

@@ -28,9 +28,24 @@ func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 		{
 			auth.POST("/register", h.signUp)
 			auth.POST("/login", h.signIn)
-			auth.POST("/avatar", h.uploadAvatar)
 		}
+
+		user := api.Group("/user", h.userIdentity)
+		{
+			user.POST("/avatar", h.uploadAvatar)
+		}
+
+		album := api.Group("/album", h.userIdentity)
+		{
+			album.POST("/", h.createAlbum)
+			album.GET("/", h.getAllAlbum)
+		}
+
 	}
 
 	return router
 }
+
+
+// 340 294
+// 367 385
