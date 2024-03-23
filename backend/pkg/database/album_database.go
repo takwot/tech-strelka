@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
+
 	"github.com/takwot/tech-strelka.git/pkg/models"
 )
 
@@ -52,7 +53,7 @@ func (r *AlbumPostgres) GetAllAlbum() ([]models.Album, error) {
 	return albums, nil
 }
 
-func (r *AlbumPostgres) DeleteAllAlbum(id int) error {
+func (r *AlbumPostgres) DeleteAlbum(id int) error {
 	query := fmt.Sprintf("DELETE  FROM %s WHERE id=$1", albumTable)
 
 	_, err := r.db.Exec(query)
@@ -60,31 +61,32 @@ func (r *AlbumPostgres) DeleteAllAlbum(id int) error {
 	return err
 }
 
-// func (r *AlbumPostgres) UpdateAlbum(id int, update_id []int) (models.Album, error) {
-// 	var album models.Album
+func (r *AlbumPostgres) UpdateAlbum(albumID int, newPhotoIDs []int) error {
+	query := fmt.Sprintf("UPDATE %s SET photo_ids = photo_ids || $1 WHERE id = $2", albumTable)
 
-// 	prev_list := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", albumTable)
-// 	list = prev_list + update_id
+	interfacePhotoIDs := make([]interface{}, len(newPhotoIDs))
+	for i, id := range newPhotoIDs {
+		interfacePhotoIDs[i] = id
+	}
 
-// 	row := r.db.QueryRow(list, id)
+	_, err := r.db.Exec(query, interfacePhotoIDs, albumID)
+	if err != nil {
+		return err
+	}
 
-// 	if err := row.Scan(&album); err != nil {
-// 		return album, err
-// 	}
+	return nil
+}
 
-// 	return album, nil
-// }
+func (r *AlbumPostgres) RenameAlbum(id int, newName string) (models.Album, error) {
+	var album models.Album
 
-// func (r *AlbumPostgres) RenameAlbum(id int, newName string) (models.Album, error) {
-// 	var album models.Album
+	query := fmt.Sprintf("UPDATE %s SET name = $2 WHERE id = $1", albumTable)
 
-// 	query := fmt.Sprintf("UPDATE %s SET name = $2 WHERE id = $1", albumTable)
+	row := r.db.QueryRow(query, newName, id)
 
-// 	row := r.db.QueryRow(query, update_id[0], id)
+	if err := row.Scan(&album); err != nil {
+		return album, err
+	}
 
-// 	if err := row.Scan(&album); err != nil {
-// 		return album, err
-// 	}
-
-// 	return album, nil
-// }
+	return album, nil
+}
