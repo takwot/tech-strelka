@@ -32,6 +32,10 @@ func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 		{
 			album.POST("/", h.createAlbum)
 		}
+		photo := api.Group("/photo")
+		{
+			photo.POST("/", h.addPhoto)
+		}
 	}
 
 	return router

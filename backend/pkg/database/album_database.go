@@ -60,31 +60,31 @@ func (r *AlbumPostgres) DeleteAllAlbum(id int) error {
 	return err
 }
 
-func (r *AlbumPostgres) UpdateAlbum(id int, update_id []int) (models.Album, error) {
-	var album models.Album
+// func (r *AlbumPostgres) UpdateAlbum(id int, update_id []int) (models.Album, error) {
+// 	var album models.Album
 
-	prev_list := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", albumTable)
-	list = prev_list + update_id
+// 	prev_list := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", albumTable)
+// 	list = prev_list + update_id
 
-	row := r.db.QueryRow(list, id)
+// 	row := r.db.QueryRow(list, id)
 
-	if err := row.Scan(&album); err != nil {
-		return album, err
-	}
+// 	if err := row.Scan(&album); err != nil {
+// 		return album, err
+// 	}
 
-	return album, nil
-}
+// 	return album, nil
+// }
 
-func (r *AlbumPostgres) RenameAlbum(id int, newName string) (models.Album, error) {
-	var album models.Album
+// func (r *AlbumPostgres) RenameAlbum(id int, newName string) (models.Album, error) {
+// 	var album models.Album
 
-	query := fmt.Sprintf("UPDATE %s SET name = $2 WHERE id = $1", albumTable)
+// 	query := fmt.Sprintf("UPDATE %s SET name = $2 WHERE id = $1", albumTable)
 
-	row := r.db.QueryRow(query, update_id[0], id)
+// 	row := r.db.QueryRow(query, update_id[0], id)
 
-	if err := row.Scan(&album); err != nil {
-		return album, err
-	}
+// 	if err := row.Scan(&album); err != nil {
+// 		return album, err
+// 	}
 
-	return album, nil
-}
+// 	return album, nil
+// }
