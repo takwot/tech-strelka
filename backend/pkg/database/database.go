@@ -13,6 +13,10 @@ type Auth interface {
 type Album interface {
 	CreateAlbum(album models.Album) (int, error)
 	GetAllAlbum() ([]models.Album, error)
+	GetAlbum(id int) (models.Album, error)
+	DeleteAlbum(id int) error
+	UpdateAlbum(albumID int, newPhotoIDs []int) error
+	RenameAlbum(id int, newName string) error
 }
 
 type Repository struct {
