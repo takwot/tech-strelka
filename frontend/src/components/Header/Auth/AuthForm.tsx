@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import styles from "./Auth.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Api from "../../../core/api/api";
 
 const AuthForm = () => {
@@ -8,6 +8,7 @@ const AuthForm = () => {
 
   const [password, setPassword] = useState("");
   const [nick, setNick] = useState("");
+  const [email, setEmail] = useState("");
 
   const auth = () => {
     Api.login(nick, password)
@@ -16,6 +17,12 @@ const AuthForm = () => {
       })
       .catch((err) => console.log(err.response.data));
   };
+
+  useEffect(() => {
+    setEmail("");
+    setNick("");
+    setPassword("");
+  }, [register]);
 
   return (
     <div className={styles.auth}>
@@ -32,7 +39,7 @@ const AuthForm = () => {
           {register ? "Register" : "Login"}
         </p>
         <TextField
-          label="Nickname"
+          label="Name"
           sx={{ fontSize: "14px", width: "100%" }}
           variant="standard"
           value={nick}
@@ -40,11 +47,6 @@ const AuthForm = () => {
         />
         {register && (
           <>
-            <TextField
-              label="Name"
-              sx={{ fontSize: "14px", width: "100%" }}
-              variant="standard"
-            />
             <TextField
               label="Email"
               sx={{ fontSize: "14px", width: "100%" }}

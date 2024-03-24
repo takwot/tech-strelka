@@ -6,28 +6,28 @@ import (
 )
 
 type Auth interface {
-	CreateUser(user models.User) (int, error)
-	ParseToken(token string) (int, error)
-	GenerateToken(username string, password string) (string, error)
+    CreateUser(user models.User) (int, error)
+    ParseToken(token string) (int, error)
+    GenerateToken(username string, password string) (string, error)
 }
 
 type Album interface {
-	CreateAlbum(album models.Album) (int, error)
-	GetAllAlbum() ([]models.Album, error)
-	GetAlbum(id int) (models.Album, error)
-	DeleteAlbum(id int) error
-	UpdateAlbum(id int, update_id []int) error
-	RenameAlbum(id int, newName string) error
+    CreateAlbum(album models.Album) (int, error)
+    GetAllAlbum() ([]models.Album, error)
+    GetAlbum(id int) (models.Album, error)
+    DeleteAlbum(id int) error
+    UpdateAlbum(id int, update_id []int) error
+    RenameAlbum(id int, newName string) (models.Album, error) 
 }
 
 type Service struct {
-	Auth
-	Album
+    Auth
+    Album
 }
 
 func NewServices(repo *database.Repository) *Service {
-	return &Service{
-		Auth:  NewAuthService(*repo),
-		Album: NewAlbumService(*repo),
-	}
+    return &Service{
+        Auth:  NewAuthService(*repo),
+        Album: NewAlbumService(*repo),
+    }
 }

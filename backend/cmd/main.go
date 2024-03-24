@@ -43,13 +43,6 @@ func main() {
 	handlers.InitRoutes(srv)
 
 	srv.Run(":5000")
-
-	// srv := new(srv.Server)
-
-	// if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-	// 	logrus.Fatalf("Error while start server!", err.Error())
-	// }
-
 }
 
 func initConfig() error {

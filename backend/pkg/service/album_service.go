@@ -25,7 +25,7 @@ func (s *AlbumService) GetAlbum(id int) (models.Album, error) {
 	return s.repo.Album.GetAlbum(id)
 }
 
-func (s *AlbumService) UpdateAlbumAlbum(id int, newPhotoIDs []int) error {
+func (s *AlbumService) UpdateAlbum(id int, newPhotoIDs []int) error {
 	return s.repo.Album.UpdateAlbum(id, newPhotoIDs)
 }
 
@@ -33,6 +33,6 @@ func (s *AlbumService) DeleteAlbum(id int) error {
 	return s.repo.Album.DeleteAlbum(id)
 }
 
-func (s *AlbumService) RenameAlbum(id int, newName string) error {
+func (s *AlbumService) RenameAlbum(id int, newName string) (models.Album, error) {
 	return s.repo.Album.RenameAlbum(id, newName)
 }
