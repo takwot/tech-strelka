@@ -33,6 +33,6 @@ func (s *AlbumService) DeleteAlbum(id int) error {
 	return s.repo.Album.DeleteAlbum(id)
 }
 
-func (s *AlbumService) RenameAlbum(id int, newName string) (models.Album, error) {
+func (s *AlbumService) RenameAlbum(id int, newName string) ( error) {
 	return s.repo.Album.RenameAlbum(id, newName)
 }
