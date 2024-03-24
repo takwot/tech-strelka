@@ -2,18 +2,36 @@ import { Button, TextField } from "@mui/material";
 import styles from "./Auth.module.scss";
 import { useEffect, useState } from "react";
 import Api from "../../../core/api/api";
+import { useCookies } from "react-cookie";
+import useAuth from "../../../core/store/auth";
 
 const AuthForm = () => {
   const [register, setRegister] = useState(false);
+
+  const { setIsAuthenticated } = useAuth();
 
   const [password, setPassword] = useState("");
   const [nick, setNick] = useState("");
   const [email, setEmail] = useState("");
 
+  const [cookies, setCookies] = useCookies();
+
   const auth = () => {
     Api.login(nick, password)
       .then((res) => {
-        console.log(res.data);
+        cookies.token;
+        if (res.data.token) {
+          setCookies("token", res.data.token);
+          setIsAuthenticated(true);
+        }
+      })
+      .catch((err) => console.log(err.response.data));
+  };
+
+  const registerHandler = () => {
+    Api.register(nick, password, email)
+      .then(() => {
+        setRegister(false);
       })
       .catch((err) => console.log(err.response.data));
   };
@@ -51,6 +69,8 @@ const AuthForm = () => {
               label="Email"
               sx={{ fontSize: "14px", width: "100%" }}
               variant="standard"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
             />
           </>
         )}
@@ -73,7 +93,7 @@ const AuthForm = () => {
         }}
       >
         <Button
-          onClick={register ? auth : auth}
+          onClick={register ? registerHandler : auth}
           sx={{ width: "100%" }}
           variant="contained"
         >

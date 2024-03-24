@@ -104,7 +104,7 @@ func (h *Handle) renameAlbum(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "validation error")
 	}
 
-	err := h.service.Album.RenameAlbum(input.Id, input.Name)
+	_, err := h.service.Album.RenameAlbum(input.Id, input.Name)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())

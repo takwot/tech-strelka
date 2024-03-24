@@ -11,10 +11,9 @@ const Api = {
       password,
     });
   },
-  register(username: string, password: string, name: string, email: string) {
+  register(username: string, password: string, email: string) {
     return instanse.post("/auth/register", {
-      username,
-      name,
+      name: username,
       email,
       password,
     });
