@@ -62,7 +62,7 @@ func (r *AlbumPostgres) DeleteAlbum(id int) error {
 }
 
 func (r *AlbumPostgres) UpdateAlbum(albumID int, newPhotoIDs []int) error {
-	query := fmt.Sprintf("UPDATE %s SET photo_ids = photo_ids || $1 WHERE id = $2", albumTable)
+	query := fmt.Sprintf("UPDATE %s SET photos = photos || $1 WHERE id = $2", albumTable)
 
 	interfacePhotoIDs := make([]interface{}, len(newPhotoIDs))
 	for i, id := range newPhotoIDs {
