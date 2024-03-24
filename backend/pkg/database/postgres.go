@@ -11,6 +11,7 @@ import (
 const (
 	usersTable = "users"
 	albumTable = "albums"
+	photoTable = "photos"
 )
 
 type Config struct {

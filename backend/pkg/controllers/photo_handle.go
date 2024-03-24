@@ -7,21 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handle) addPhoto(c *gin.Context) {
-
-	form, err := c.MultipartForm()
-
-	files := form.File["photo[]"]
-
+func (h *Handle) CreatePhoto(c *gin.Context) {
+	id, err := h.getUserId(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		newErrorResponse(c, http.StatusNotFound, "user not found")
 	}
-
-	for _, file := range files {
-
-		c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/%s", 3, file.Filename))
-	}
-
-	c.JSON(http.StatusOK, gin.H{"status": true})
+	file, _ := c.FormFile("file")
+	filename := file.Filename
+	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/%s", id, filename))
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"status": true,
+	})
 }
