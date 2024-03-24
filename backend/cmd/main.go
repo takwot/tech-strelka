@@ -19,7 +19,7 @@ func main() {
 	}
 
 	db, err := database.InitDb(&database.Config{
-		Host:     "localhost",
+		Host:     "45.84.225.194",
 		Username: "dev",
 		SSLMode:  "disable",
 		Password: "f7636c0azc8bfk1",
@@ -28,7 +28,7 @@ func main() {
 	})
 
 	if err != nil {
-		logrus.Fatalf("Error in init DB", err.Error())
+		logrus.Fatal("Error in init DB", err.Error())
 	}
 
 	repos := database.NewRepository(db)
@@ -39,7 +39,7 @@ func main() {
 
 	corsMiddleware := cors.Default()
 
- 	srv.Use(corsMiddleware)
+	srv.Use(corsMiddleware)
 	handlers.InitRoutes(srv)
 
 	srv.Run(":5000")
