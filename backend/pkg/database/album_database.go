@@ -20,7 +20,7 @@ func (r *AlbumPostgres) CreateAlbum(album models.Album) (int, error) {
 
 	var id int
 
-	query := fmt.Sprintf("INSERT INTO %s (name, author) VALUES ($1, $2) RETURNING id", albumTable)
+	query := fmt.Sprintf("INTERT INTO %s (name, author) VALUES ($1, $2) RETURNING id", albumTable)
 
 	row := r.db.QueryRow(query, album.Name, album.Author)
 
@@ -56,7 +56,7 @@ func (r *AlbumPostgres) GetAllAlbum() ([]models.Album, error) {
 func (r *AlbumPostgres) DeleteAlbum(id int) error {
 	query := fmt.Sprintf("DELETE  FROM %s WHERE id=$1", albumTable)
 
-	_, err := r.db.Exec(query)
+	_, err := r.db.Exec(query, id)
 
 	return err
 }
@@ -77,16 +77,16 @@ func (r *AlbumPostgres) UpdateAlbum(albumID int, newPhotoIDs []int) error {
 	return nil
 }
 
-func (r *AlbumPostgres) RenameAlbum(id int, newName string) (models.Album, error) {
+func (r *AlbumPostgres) RenameAlbum(id int, newName string) error {
 	var album models.Album
 
-	query := fmt.Sprintf("UPDATE %s SET name = $2 WHERE id = $1", albumTable)
+	query := fmt.Sprintf("UPDATE %s SET name = $1 WHERE id = $2", albumTable)
 
 	row := r.db.QueryRow(query, newName, id)
 
 	if err := row.Scan(&album); err != nil {
-		return album, err
+		return err
 	}
 
-	return album, nil
+	return nil
 }
