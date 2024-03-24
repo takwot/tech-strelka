@@ -16,7 +16,7 @@ type Album interface {
 	GetAlbum(id int) (models.Album, error)
 	DeleteAlbum(id int) error
 	UpdateAlbum(albumID int, newPhotoIDs []int) error
-	RenameAlbum(id int, newName string) (models.Album, error) 
+	RenameAlbum(id int, newName string) ( error) 
 }
 
 type Repository struct {

@@ -17,7 +17,7 @@ type Album interface {
     GetAlbum(id int) (models.Album, error)
     DeleteAlbum(id int) error
     UpdateAlbum(id int, update_id []int) error
-    RenameAlbum(id int, newName string) (models.Album, error) 
+    RenameAlbum(id int, newName string) (error) 
 }
 
 type Service struct {
