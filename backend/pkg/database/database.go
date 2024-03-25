@@ -16,17 +16,25 @@ type Album interface {
 	GetAlbum(id int) (models.Album, error)
 	DeleteAlbum(id int) error
 	UpdateAlbum(albumID int, newPhotoIDs []int) error
-	RenameAlbum(id int, newName string) ( error) 
+	RenameAlbum(id int, newName string) error
+}
+
+type Photo interface {
+	CreatePhoto(photo models.Photo) (int, error)
+	DeletePhoto(id int) error
+	GetPhoto(id int) (models.Photo, error)
 }
 
 type Repository struct {
 	Auth
 	Album
+	Photo
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Auth: NewAuthPostgres(db),
+		Auth:  NewAuthPostgres(db),
+		Photo: NewPhotoPostgres(db),
 		Album: NewAlbumPostgres(db),
 	}
 }
