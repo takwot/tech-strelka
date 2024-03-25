@@ -15,11 +15,15 @@ func NewHandle(service *service.Service) *Handle {
 
 func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 
-
-
+	// corsConfig := cors.New(cors.Options{
+	// AllowedOrigins: []string{"http://localhost:5173/"},
+	// AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+	// AllowedHeaders: []string{"Content-Type", "Authorization"},
+	//    })
 
 	api := router.Group("/api")
-	api.Use(CORS())
+	api.Use(enableCors())
+
 	{
 		auth := api.Group("/auth")
 		{
@@ -28,14 +32,14 @@ func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 		}
 		album := api.Group("/album")
 		{
-			album.POST("/", h.createAlbum)
-			album.GET("/", h.getAllAlbum)
-			album.GET("/:id", h.getAlbum)
+			album.POST("/create", h.createAlbum)
+			album.GET("/all", h.getAllAlbum)
+			album.GET("/", h.getAlbum)
 			album.DELETE("/", h.deleteAlbum)
 			album.PUT("/", h.updateAlbum)
 			album.PUT("/rename", h.renameAlbum)
 		}
-		photo := api.Group("/photo", h.userIdentity)
+		photo := api.Group("/photo")
 		{
 			photo.POST("/", h.CreatePhoto)
 			photo.GET("/", h.GetPhoto)
@@ -47,3 +51,13 @@ func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 
 // 340 294
 // 367 385
+func enableCors() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		c.Next()
+	}
+}
