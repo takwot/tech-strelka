@@ -21,7 +21,7 @@ func (s *AlbumService) GetAllAlbum() ([]models.Album, error) {
 	return s.repo.Album.GetAllAlbum()
 }
 
-func (s *AlbumService) GetAlbum(id int) (models.Album, error) {
+func (s *AlbumService) GetAlbum(id string) (models.Album, error) {
 	return s.repo.Album.GetAlbum(id)
 }
 

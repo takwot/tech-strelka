@@ -37,7 +37,7 @@ func main() {
 
 	srv := gin.Default()
 
-	corsMiddleware := cors.Default()
+	corsMiddleware := cors.AllowAll()
 
 	srv.Use(corsMiddleware)
 	handlers.InitRoutes(srv)

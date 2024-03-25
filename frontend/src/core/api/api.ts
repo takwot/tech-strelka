@@ -18,6 +18,13 @@ const Api = {
       password,
     });
   },
+  createPhoto(form: FormData, token: string) {
+    return instanse.post("/photo?tags=[1, 2, 3]", form, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
 };
 
 export default Api;

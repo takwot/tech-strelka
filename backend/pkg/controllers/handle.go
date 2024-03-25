@@ -15,13 +15,11 @@ func NewHandle(service *service.Service) *Handle {
 
 func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 
-	// corsConfig := cors.New(cors.Options{
-	// AllowedOrigins: []string{"http://localhost:5173/"},
-	// AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-	// AllowedHeaders: []string{"Content-Type", "Authorization"},
-	//    })
+
+
 
 	api := router.Group("/api")
+	api.Use(CORS())
 	{
 		auth := api.Group("/auth")
 		{
@@ -30,14 +28,14 @@ func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 		}
 		album := api.Group("/album")
 		{
-			album.POST("/create", h.createAlbum)
-			album.GET("/all", h.getAllAlbum)
-			album.GET("/", h.getAlbum)
+			album.POST("/", h.createAlbum)
+			album.GET("/", h.getAllAlbum)
+			album.GET("/:id", h.getAlbum)
 			album.DELETE("/", h.deleteAlbum)
 			album.PUT("/", h.updateAlbum)
 			album.PUT("/rename", h.renameAlbum)
 		}
-		photo := api.Group("/photo")
+		photo := api.Group("/photo", h.userIdentity)
 		{
 			photo.POST("/", h.CreatePhoto)
 			photo.GET("/", h.GetPhoto)

@@ -36,14 +36,7 @@ func (h *Handle) createAlbum(c *gin.Context) {
 }
 
 func (h *Handle) getAllAlbum(c *gin.Context) {
-	var input models.Album
-
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "validation error",
-		})
-	}
-
+	
 	album, err := h.service.Album.GetAllAlbum()
 
 	if err != nil {
@@ -58,15 +51,9 @@ func (h *Handle) getAllAlbum(c *gin.Context) {
 }
 
 func (h *Handle) getAlbum(c *gin.Context) {
-	var input models.Album
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "validation error",
-		})
-		return
-	}
+	id := c.Param("id")
 
-	album, err := h.service.Album.GetAlbum(input.Id)
+	album, err := h.service.Album.GetAlbum(id)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -105,22 +92,23 @@ func (h *Handle) deleteAlbum(c *gin.Context) {
 }
 
 func (h *Handle) updateAlbum(c *gin.Context) {
-	var input models.Album
+	// var input models.Album
 
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "validation error",
-		})
-		return
-	}
+	// if err := c.ShouldBindJSON(&input); err != nil {
+	// 	c.JSON(http.StatusBadRequest, map[string]interface{}{
+	// 		"status": "validation error",
+	// 	})
+	// 	return
+	// }
 
-	err := h.service.Album.UpdateAlbum(input.Id, input.Photos)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "error while updating album",
-		})
-		return
-	}
+	// err := h.service.Album.UpdateAlbum(input.Id, input.Photos)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, map[string]interface{}{
+	// 		"status": "error while updating album",
+	// 	})
+	// 	return
+	// }
+
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"status": true,

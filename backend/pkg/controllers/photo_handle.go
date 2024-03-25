@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,16 +9,36 @@ import (
 )
 
 func (h *Handle) CreatePhoto(c *gin.Context) {
-	var input models.Photo
-	id, err := h.service.Photo.CreatePhoto(input)
 
-	if err != nil {
-		newErrorResponse(c, http.StatusNotFound, "user not found")
+	id, ok := c.Get(userCtx)
+	if !ok {
+		newErrorResponse(c, http.StatusUnauthorized, "user id is of invalid type")
+		return
 	}
 
+	idInt, ok := id.(string)
+	if !ok {
+		newErrorResponse(c, http.StatusUnauthorized, "user id is of invalid type")
+		return 
+	}
+
+	fmt.Print(idInt)
+
+	tags := c.Query("tags")
+
+	fmt.Print(tags)
+
+	file, err := c.FormFile("file")
+
+	if err!= nil {
+        newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	
+	c.SaveUploadedFile(file, fmt.Sprintf("./upload/%s/%s", idInt, file.Filename))
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"status": true,
-		"id":     id,
+		"tags": tags,
 	})
 }
 

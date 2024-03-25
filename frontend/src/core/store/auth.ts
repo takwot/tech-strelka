@@ -6,7 +6,7 @@ interface Auth {
 }
 
 const useAuth = create<Auth>((set) => ({
-  isAuthenticated: false,
+  isAuthenticated: true,
   setIsAuthenticated: (state: boolean) => set({ isAuthenticated: state }),
 }));
 
