@@ -5,9 +5,7 @@ import Api from "../../../core/api/api";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useAlbums from "../../../core/store/album";
 
-type Props = {};
-
-const Albums = (props: Props) => {
+const Albums = () => {
   const [albums, setAlbums] = useState<any[]>([]);
 
   const id = useAuth((state) => state.user.id);
@@ -23,7 +21,6 @@ const Albums = (props: Props) => {
     });
   }, [create]);
 
-  const [current, setCurrent] = useState(0);
   const [isWatching, setIsWatching] = useState(false);
 
   return (
@@ -57,7 +54,6 @@ const Albums = (props: Props) => {
             >
               <p
                 onClick={() => {
-                  setCurrent(el.id);
                   setIsWatching(true);
                   setPhoto(JSON.parse(el.photos));
                 }}

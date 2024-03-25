@@ -24,7 +24,7 @@ const AddAlbum = ({ setView }: Props) => {
   }, []);
 
   const addHandle = () => {
-    Api.createAlbum(name, id, photos).then((res) => {
+    Api.createAlbum(name, id, photos).then(() => {
       setPhotos([]);
       setCreate(true);
       setName("");
