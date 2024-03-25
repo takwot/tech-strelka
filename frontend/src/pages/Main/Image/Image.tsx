@@ -17,7 +17,7 @@ const Image = ({ src, getAll, isExist }: Props) => {
     });
   };
 
-  const srcFile = `http://localhost:3000/api/photo?filename=${src}`;
+  const srcFile = `http://45.84.225.194:3000/api/photo?filename=${src}`;
 
   return (
     <div

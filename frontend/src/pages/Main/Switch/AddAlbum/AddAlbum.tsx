@@ -55,7 +55,7 @@ const AddAlbum = ({ setView }: Props) => {
         >
           {allPhotos.map((el) => {
             const name = el.name;
-            const url = `http://localhost:3000/api/photo?filename=${el.name}`;
+            const url = `http://45.84.225.194:3000/api/photo?filename=${el.name}`;
             return (
               <div
                 className={styles.img}

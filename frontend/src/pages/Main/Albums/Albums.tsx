@@ -39,7 +39,7 @@ const Albums = (props: Props) => {
           </div>
           <div className={styles.photo_cont}>
             {photo.map((el) => {
-              const srcFile = `http://localhost:3000/api/photo?filename=${el}`;
+              const srcFile = `http://45.84.225.194:3000/api/photo?filename=${el}`;
               return <img src={srcFile} />;
             })}
           </div>

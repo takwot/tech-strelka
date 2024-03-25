@@ -37,20 +37,24 @@ const login = (req, res) => {
   pool.query("SELECT * FROM users WHERE name = $1", [name], (err, result) => {
     const user = result.rows[0];
 
-    const password_hash = require("bcrypt").compareSync(
-      password,
-      user.password_hash
-    );
+    if (user) {
+      const password_hash = require("bcrypt").compareSync(
+        password,
+        user.password_hash
+      );
 
-    console.log(password_hash);
+      console.log(password_hash);
 
-    if (!password_hash) {
-      res.status = 401;
-      res.json({ error: "error" });
-      return;
+      if (!password_hash) {
+        res.status = 401;
+        res.json({ error: "error" });
+        return;
+      } else {
+        const { id, email, name, password_hash } = user;
+        res.json({ user: { id, email, name } });
+      }
     } else {
-      const { id, email, name, password_hash } = user;
-      res.json({ user: { id, email, name } });
+      res.json({ error: "User not found" });
     }
   });
 };
