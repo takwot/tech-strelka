@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Main from "./pages/Main/Main";
 import useAuth from "./core/store/auth";
@@ -11,8 +11,10 @@ function App() {
     <>
       <BrowserRouter>
         <Header />
+        {isAuthenticated ? <Navigate to={"/"} /> : <Navigate to={"/auth"} />}
         <Routes>
-          <Route path="/" element={isAuthenticated ? <Main /> : <Auth />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/" element={<Main />} />
         </Routes>
       </BrowserRouter>
     </>

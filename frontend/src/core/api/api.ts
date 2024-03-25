@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instanse = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "http://localhost:3000/api",
+  withCredentials: false,
 });
 
 const Api = {
@@ -18,12 +19,31 @@ const Api = {
       password,
     });
   },
-  createPhoto(form: FormData, token: string) {
-    return instanse.post("/photo?tags=[1, 2, 3]", form, {
+  createPhoto(form: FormData, id: number) {
+    return instanse.post(`/photo?id=${id}`, form, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
+  },
+  getAllPhoto(id: number) {
+    return instanse.get(`/photo/all?id=${id}`);
+  },
+  deletePhoto(filename: string) {
+    return instanse.delete(`/photo?filename=${filename}`);
+  },
+  createAlbum(name: string, author: number, photos: string[]) {
+    return instanse.post("/album", {
+      name,
+      author,
+      photos,
+    });
+  },
+  deleteAlbum(id: number) {
+    return instanse.delete(`/album?id=${id}`);
+  },
+  getAllAlbum(id: number) {
+    return instanse.get(`/album?author=${id}`);
   },
 };
 

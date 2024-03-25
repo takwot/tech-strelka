@@ -8,7 +8,7 @@ import useAuth from "../../../core/store/auth";
 const AuthForm = () => {
   const [register, setRegister] = useState(false);
 
-  const { setIsAuthenticated } = useAuth();
+  const { setIsAuthenticated, setUser } = useAuth();
 
   const [password, setPassword] = useState("");
   const [nick, setNick] = useState("");
@@ -19,10 +19,12 @@ const AuthForm = () => {
   const auth = () => {
     Api.login(nick, password)
       .then((res) => {
-        cookies.token;
-        if (res.data.token) {
-          setCookies("token", res.data.token);
+        if (res.data.user) {
+          cookies.token;
           setIsAuthenticated(true);
+          setUser(res.data.user);
+          setCookies("name", nick);
+          setCookies("password", password);
         }
       })
       .catch((err) => console.log(err.response.data));

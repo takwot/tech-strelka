@@ -2,14 +2,20 @@ import { Button } from "@mui/material";
 import styles from "./Switch.module.scss";
 import React, { useRef } from "react";
 import Api from "../../../core/api/api";
+import useAuth from "../../../core/store/auth";
+import AddAlbum from "./AddAlbum/AddAlbum";
 
 type Props = {
   album: boolean;
   setAlbum: React.Dispatch<React.SetStateAction<boolean>>;
+  getAll: () => void;
 };
 
-const Switch = ({ setAlbum, album }: Props) => {
+const Switch = ({ setAlbum, album, getAll }: Props) => {
   const ref: any = useRef();
+
+  const id = useAuth((state) => state.user.id);
+  const [view, setView] = React.useState(false);
 
   return (
     <div className={styles.switch}>
@@ -21,20 +27,25 @@ const Switch = ({ setAlbum, album }: Props) => {
         hidden
         type="file"
         onChange={(e) => {
-          const data = new FormData();
-
           const files: any = e.target.files;
-
-          if (files) {
-            data.append("file", files[0]);
-            const token =
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTE0MDU2OTgsImlhdCI6MTcxMTM2MjQ5OCwidXNlcl9pZCI6Mn0.-nwDqnBIC6Qi9QYM-Va7NYAlZm07fSbLkezI-lwhm6U";
-            Api.createPhoto(data, token).then((res) => {
-              console.log(res.data);
-            });
-          }
+          const data = new FormData();
+          console.log(files);
+          data.append("file", files[0]);
+          Api.createPhoto(data, id).then(() => {
+            getAll();
+          });
         }}
       />
+      {view && <AddAlbum setView={setView} />}
+      {album && (
+        <Button
+          variant="contained"
+          style={{ width: "150px" }}
+          onClick={() => setView(true)}
+        >
+          Add album
+        </Button>
+      )}
       <p onClick={() => setAlbum(!album)}>{album ? "All" : "Albums"}</p>
     </div>
   );

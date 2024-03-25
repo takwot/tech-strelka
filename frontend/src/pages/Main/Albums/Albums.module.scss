@@ -3,9 +3,21 @@
   flex-direction: column;
   color: white;
   font-size: 24px;
-
+  gap: 16px;
   font-weight: 600;
   p {
     cursor: pointer;
+  }
+
+  .photo_cont {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    img {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: 16px;
+    }
   }
 }
