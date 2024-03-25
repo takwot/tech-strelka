@@ -45,8 +45,7 @@ func (r *AlbumPostgres) GetAlbum(id int) (models.Album, error) {
 func (r *AlbumPostgres) GetAllAlbum() ([]models.Album, error) {
 	var albums []models.Album
 
-	query := fmt.Sprintf("SELECT * FROM %s", albumTable)
-
+	query := fmt.Sprintf("SELECT id, name, author, photos FROM %s", albumTable)
 	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, err
@@ -67,6 +66,7 @@ func (r *AlbumPostgres) GetAllAlbum() ([]models.Album, error) {
 
 	return albums, nil
 }
+
 
 func (r *AlbumPostgres) DeleteAlbum(id int) error {
 	query := fmt.Sprintf("DELETE  FROM %s WHERE id=$1", albumTable)
