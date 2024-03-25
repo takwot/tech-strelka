@@ -32,14 +32,18 @@ func (r *PhotoPostgres) CreatePhoto(photo models.Photo) (int, error) {
 
 func (r *PhotoPostgres) GetPhoto(id int) (models.Photo, error) {
 	var photo models.Photo
+	query := "SELECT * FROM " + photoTable + " WHERE id = $1"
+	err := r.db.QueryRow(query, id).Scan(&photo.Id, &photo.Name)
 
-	query := fmt.Sprintf("SELECT id FROM %s WHERE id=$1", photoTable)
-	err := r.db.Get(&photo, query, id)
+	if err != nil {
+		return photo, err
+	}
 
-	return photo, err
+	return photo, nil
 }
+
 func (r *PhotoPostgres) DeletePhoto(id int) error {
-	query := fmt.Sprintf("DELETE  FROM %s WHERE id=$1", photoTable)
+	query := fmt.Sprintf("DELETE FROM %s WHERE id=$1", photoTable)
 
 	_, err := r.db.Exec(query)
 
