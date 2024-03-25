@@ -15,6 +15,7 @@ func (h *Handle) createAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "validation error",
 		})
+		return
 	}
 
 	id, err := h.service.Album.CreateAlbum(input)
@@ -23,6 +24,7 @@ func (h *Handle) createAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "error while creating",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -44,7 +46,7 @@ func (h *Handle) getAllAlbum(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"status": "error while updating album",
+			"status": "error while getting album",
 		})
 	}
 
@@ -59,6 +61,7 @@ func (h *Handle) getAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "validation error",
 		})
+		return
 	}
 
 	album, err := h.service.Album.GetAlbum(input.Id)
@@ -67,6 +70,7 @@ func (h *Handle) getAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "error while getting album",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -81,6 +85,7 @@ func (h *Handle) deleteAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "validation error",
 		})
+		return
 	}
 
 	err := h.service.Album.DeleteAlbum(input.Id)
@@ -89,6 +94,7 @@ func (h *Handle) deleteAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "error while deleting album",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -103,6 +109,7 @@ func (h *Handle) updateAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "validation error",
 		})
+		return
 	}
 
 	err := h.service.Album.UpdateAlbum(input.Id, input.Photos)
@@ -110,6 +117,7 @@ func (h *Handle) updateAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "error while updating album",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -124,6 +132,7 @@ func (h *Handle) renameAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "validation error",
 		})
+		return
 	}
 
 	err := h.service.Album.RenameAlbum(input.Id, input.Name)
@@ -132,6 +141,7 @@ func (h *Handle) renameAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "error while renaming album",
 		})
+		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
