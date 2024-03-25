@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,7 @@ func (h *Handle) createAlbum(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"status": "error while creating",
 		})
+		fmt.Println(err.Error())
 		return
 	}
 
