@@ -20,11 +20,10 @@ func (r *AlbumPostgres) CreateAlbum(album models.Album) (int, error) {
 
 	var id int
 
-	query := fmt.Sprintf("INSERT INTO %s (name, author) VALUES ($1, $2) RETURNING id", albumTable)
+	query := fmt.Sprintf("INSERT INTO %s (name, author, photos) VALUES ($1, $2, $3) RETURNING id", albumTable)
 
-	row := r.db.QueryRow(query, album.Name, album.Author)
-
-	if err := row.Scan(&id); err != nil {
+	err := r.db.QueryRow(query, album.Name, album.Author, album.Photos).Scan(&id)
+	if err != nil {
 		return 0, err
 	}
 
@@ -44,9 +43,21 @@ func (r *AlbumPostgres) GetAllAlbum() ([]models.Album, error) {
 
 	query := fmt.Sprintf("SELECT * FROM %s", albumTable)
 
-	row := r.db.QueryRow(query)
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-	if err := row.Scan(&albums); err != nil {
+	for rows.Next() {
+		var album models.Album
+		if err := rows.Scan(&album.Id, &album.Name, &album.Author, &album.Photos); err != nil {
+			return nil, err
+		}
+		albums = append(albums, album)
+	}
+
+	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 

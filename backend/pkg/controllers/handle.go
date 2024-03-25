@@ -40,8 +40,11 @@ func (h *Handle) InitRoutes(router *gin.Engine) *gin.Engine {
 		photo := api.Group("/photo")
 		{
 			photo.POST("/", h.CreatePhoto)
+<<<<<<< HEAD
 			photo.GET("/", h.GetPhoto)
 			photo.DELETE("/", h.DeletePhoto)
+=======
+>>>>>>> 2d48969c018d506e8c1efda287eb36fff55d95b0
 		}
 	}
 	return router
