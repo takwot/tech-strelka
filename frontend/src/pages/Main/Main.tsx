@@ -4,7 +4,7 @@ import Switch from "./Switch/Switch";
 import Albums from "./Albums/Albums";
 
 const Main = () => {
-  const [album, setAlbum] = useState(true);
+  const [album, setAlbum] = useState(false);
   return (
     <div className={styles.container}>
       <div className={styles.content}>

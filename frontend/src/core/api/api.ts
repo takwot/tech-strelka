@@ -7,7 +7,7 @@ const instanse = axios.create({
 const Api = {
   login(nickname: string, password: string) {
     return instanse.post("/auth/login", {
-      username: nickname,
+      name: nickname,
       password,
     });
   },

@@ -29,6 +29,7 @@ const AuthForm = () => {
   };
 
   const registerHandler = () => {
+    console.log("here");
     Api.register(nick, password, email)
       .then(() => {
         setRegister(false);
