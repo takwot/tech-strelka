@@ -20,9 +20,9 @@ func (r *AlbumPostgres) CreateAlbum(album models.Album) (int, error) {
 
 	var id int
 
-	query := fmt.Sprintf("INSERT INTO %s (name, author) VALUES ($1, $2) RETURNING id", albumTable)
+	query := fmt.Sprintf("INSERT INTO %s (name, author, photos) VALUES ($1, $2, $3) RETURNING id", albumTable)
 
-	row := r.db.QueryRow(query, album.Name, album.Author)
+	row := r.db.QueryRow(query, album.Name, album.Author, album.Photos)
 
 	if err := row.Scan(&id); err != nil {
 		return 0, err
