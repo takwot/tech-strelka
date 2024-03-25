@@ -1,1 +1,9 @@
-port: "5000"
+server:
+  addr: ":5000"
+postgres:
+  host: "45.84.225.194"
+  port: "5555"
+  dbname: "techstrelka"
+  sslmode: "disable"
+  username: "dev"
+  password: "f7636c0azc8bfk1"

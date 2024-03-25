@@ -1,6 +1,10 @@
 package main
 
 import (
+	"errors"
+	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -13,19 +17,12 @@ func main() {
 
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 
-	if err := initConfig(); err != nil {
+	cfg := Config{}
+	if err := initConfig(&cfg); err != nil {
 		logrus.Fatalf("Failed in init config")
 	}
 
-	db, err := database.InitDb(&database.Config{
-		Host:     "45.84.225.194",
-		Username: "dev",
-		SSLMode:  "disable",
-		Password: "f7636c0azc8bfk1",
-		DBName:   "techstrelka",
-		Port:     "5555",
-	})
-
+	db, err := database.InitDb(cfg.Postgres)
 	if err != nil {
 		logrus.Fatal("Error in init DB", err.Error())
 	}
@@ -38,11 +35,20 @@ func main() {
 
 	handlers.InitRoutes(srv)
 
-	srv.Run(":5000")
+	if err := srv.Run(cfg.Server.Addr); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		logrus.Fatal(fmt.Sprintf("problem with run server: %+v", err))
+	}
 }
 
-func initConfig() error {
+func initConfig(cfg *Config) error {
 	viper.AddConfigPath("config")
 	viper.SetConfigName("config")
-	return viper.ReadInConfig()
+	err := viper.ReadInConfig()
+
+	if err != nil {
+		return err
+	}
+	err = viper.Unmarshal(cfg)
+
+	return err
 }
