@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
-
+	"github.com/lib/pq"
 	"github.com/takwot/tech-strelka.git/pkg/models"
 )
 
@@ -17,12 +17,16 @@ func NewAlbumPostgres(db *sqlx.DB) *AlbumPostgres {
 }
 
 func (r *AlbumPostgres) CreateAlbum(album models.Album) (int, error) {
-
 	var id int
 
 	query := fmt.Sprintf("INSERT INTO %s (name, author, photos) VALUES ($1, $2, $3) RETURNING id", albumTable)
 
-	err := r.db.QueryRow(query, album.Name, album.Author, album.Photos).Scan(&id)
+	// var photosInterface []interface{}
+	// for _, photo := range album.Photos {
+	// 	photosInterface = append(photosInterface, photo)
+	// }
+
+	err := r.db.QueryRow(query, album.Name, album.Author, pq.Array(album.Photos)).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -75,12 +79,12 @@ func (r *AlbumPostgres) DeleteAlbum(id int) error {
 func (r *AlbumPostgres) UpdateAlbum(albumID int, newPhotoIDs []int) error {
 	query := fmt.Sprintf("UPDATE %s SET photos = photos || $1 WHERE id = $2", albumTable)
 
-	interfacePhotoIDs := make([]interface{}, len(newPhotoIDs))
-	for i, id := range newPhotoIDs {
-		interfacePhotoIDs[i] = id
-	}
+	// interfacePhotoIDs := make([]interface{}, len(newPhotoIDs))
+	// for i, id := range newPhotoIDs {
+	// 	interfacePhotoIDs[i] = id
+	// }
 
-	_, err := r.db.Exec(query, interfacePhotoIDs, albumID)
+	_, err := r.db.Exec(query, pq.Array(newPhotoIDs), albumID)
 	if err != nil {
 		return err
 	}
@@ -89,13 +93,11 @@ func (r *AlbumPostgres) UpdateAlbum(albumID int, newPhotoIDs []int) error {
 }
 
 func (r *AlbumPostgres) RenameAlbum(id int, newName string) error {
-	var album models.Album
-
 	query := fmt.Sprintf("UPDATE %s SET name = $1 WHERE id = $2", albumTable)
 
-	row := r.db.QueryRow(query, newName, id)
+	_, err := r.db.Exec(query, newName, id)
 
-	if err := row.Scan(&album); err != nil {
+	if err != nil {
 		return err
 	}
 
