@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	cors "github.com/rs/cors/wrapper/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/takwot/tech-strelka.git/pkg/controllers"
@@ -37,9 +36,6 @@ func main() {
 
 	srv := gin.Default()
 
-	corsMiddleware := cors.AllowAll()
-
-	srv.Use(corsMiddleware)
 	handlers.InitRoutes(srv)
 
 	srv.Run(":5000")
